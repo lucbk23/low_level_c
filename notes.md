@@ -3,10 +3,10 @@ Binary is a base-2 number system. It is the number system we use to represent da
 It can consist of 0's and 1's.
 
 # Byte vs bits
-1 byte = 8 bits
-1 bit is represented by a single digit in binary.
-Binary is calculated by using the powers of 2. - That means that each space in the binary number system is a power of 2, which is 2^0, 2^1, 2^2, 2^3, 2^4, 2^5, 2^6, 2^7. *written the other way around, so starting from the right and going to the left*
-Each whole row of numbers in binary is a byte, which represents 8 bits and can be converted to a single digit in decimal.
+- 1 byte = 8 bits
+- 1 bit is represented by a single digit in binary.
+    - Binary is calculated by using the powers of 2. - That means that each space in the binary number system is a power of 2, which is 2^0, 2^1, 2^2, 2^3, 2^4, 2^5, 2^6, 2^7. *written the other way around, so starting from the right and going to the left*
+* Each whole row of 4 numbers in binary is a byte, which represents 8 bits and can be converted to a single digit in decimal.
 
 # Binary to decimal
  - For at konvertere resultatet til decimal, skal man multiplicere det tal (0 eller 1) med [fra højre] **2^0**, **2^1**, **2^2**, **2^3**, **2^4**, **2^5**, **2^6**, **2^7**.
@@ -89,7 +89,53 @@ Each whole row of numbers in binary is a byte, which represents 8 bits and can b
     - What it does: Shifts all the bits to the right by 1.
     - Example: ```10101100 >> 1 = 01010110```
     
+### Signed / Unsigned bits
+- Signed bits
+     - Signed bits are the ones that are used to store negative numbers.
+    - They are stored in two's complement format. Meaning they have a sign bit and a value bit.
+    - The sign bit is used to determine if the number is positive or negative. This is done by checking if the most significant bit is a 1. If it is, the number is negative, otherwise it is positive.
+    - The value bit is used to store the actual value of the number.
+     - Example: The number -128 is stored as 10000000 00000000. The sign bit is 1, and the value bit is 00000000 00000000.
+        Therefore, the number is negative and every place it says 0 is a 1.
+- Unsigned bits
+    - Unsigned bits are the ones that are used to store positive numbers.
+    - They are stored in one's complement format. Meaning they have a value bit. The value bit is used to store the actual value
+    - Example: The number 128 is stored as 00000000 10000000. The value bit is 00000000 00000000.
 
+
+# Memory
+In C, memory management refers to the allocation, use and deallocation of memory during the execution of a program.
+### Memory allocation
+Memory is divided into 2 main areas: 
+- Stack - This is the order in which functions and the variables are called in the program. The stack is simply explained as a stack of books, you can only access the top of the stack, and you can only add books to the top of the stack.
+- Heap - This is best explained as a "grid" where you can point to a specific "square" in the grid to which you chose to allocate certain calls, these calls are then located at a specific address in the heap. The heap is the area where the actual data is stored.
+
+### Recursion
+Recursion occurs when a function calls itself to solve a smaller instance of a problem until a base condition is met. Each recursive call creates a *new stack frame* with its own set of variables. Therefore the addresses of the same integers for instance, can actually have the same value but different addresses since they are called recursively and in their own stack. 
+
+![alt text](18315740-285b-4aa7-ad02-3c653275b289.webp)
+
+- watch the squares and pay attention to the values and their addresses, they are the seperate stacks that memory wise work as below:
+![alt text](20240907_174709.webp)
+
+
+### Pointers
+Pointers are variables that store the address of another variable.
+- Pointers are used to point to a specific memory location.
+- Pointers are used to pass variables to functions.
+
+```int a = 10;``` // a is a variable that stores the value 10
+
+```int *p = &a;``` // p is a pointer that stores the address of a
+
+```&a``` This is the *address of* operator, when used in a function such as ```printf()``` it will print the address of the variable.
+- Pointers are quite useful, but also quite complecited: 
+    - Pointers can point at pointers, which can point at pointers, and so on.
+    - Pointers are not always the best solution to a problem, but they are the most common.
+    - For instance you can have a variable that has a value, which is then placed at a specific address in the heap, then you can chose to point to that variable and place it in a different location in the heap.
+    - This is called **dynamic memory allocation**.
+    - The pointer can be used to point to a specific memory location, and the memory location can then be changed.
+    
 
 # Hex Dump
 
