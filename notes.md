@@ -135,7 +135,7 @@ Pointers are variables that store the address of another variable.
     - For instance you can have a variable that has a value, which is then placed at a specific address in the heap, then you can chose to point to that variable and place it in a different location in the heap.
     - This is called **dynamic memory allocation**.
     - The pointer can be used to point to a specific memory location, and the memory location can then be changed.
-    
+    # DER MANGLER FLERE NOTER TIL MEMORY
 
 # Hex Dump
 
