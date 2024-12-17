@@ -85,12 +85,12 @@ It can consist of 0's and 1's.
         - `<<` LEFT SHIFT
         - `>>` RIGHT SHIFT
 ## Explanation
-- `&` AND
-    - Think of it like a strict rule; if both things are true, then the result is true (1). If neither thing is true, then the result is false (0).
-    - What it does: Compares two bits and gives 1 only if **both** bits are 1.
-    - Example: ```01010110 & 01101001 = 01010110 & 01101001 = 10101001```
-    - Ovenover: Kig på *01101001* og *01010110* - lad os dele den op fra højre til venstre og sammenlign om der står 1 på de samme pladser. Hvis der er 1 på de samme pladser, så returneres 1 i resultatet.
-    - Hvis der ikke er 1 på de samme pladser, så returneres 0 i resultatet.
+## `&` AND
+ - Think of it like a strict rule; if both things are true, then the result is true (1). If neither thing is true, then the result is false (0).
+ - What it does: Compares two bits and gives 1 only if **both** bits are 1.
+ - Example: ```01010110 & 01101001 = 01010110 & 01101001 = 10101001```
+ - Ovenover: Kig på *01101001* og *01010110* - lad os dele den op fra højre til venstre og sammenlign om der står 1 på de samme pladser. Hvis der er 1 på de samme pladser, så returneres 1 i resultatet.
+ - Hvis der ikke er 1 på de samme pladser, så returneres 0 i resultatet.
    
 
 ## `|` OR
