@@ -17,3 +17,17 @@ avr-gcc -Os -mmcu=atmega328p -DF_CPU=16000000UL itsbinfun.c -o itsbinfun.elf
 avr-objcopy -O ihex itsbinfun.elf itsbinfun.hex
 
 avrdude -c arduino -p m328p -P /dev/tty.usbserial-BG000IJ7 -b 57600 -D -U flash:w:itsbinfun.hex:i
+
+## A good idea would be to make a Makefile for this.
+
+## That has been done!
+
+### Using the Makefile
+- Check the makefile in the folder for the correct variables.
+    - Variables to check out are:
+        - MCU
+        - F_CPU
+        - PROGRAMMER
+        - BAUD
+        - PORT
+*If making the Makefile with copilot, delete any indentations and make them with **TAB** instead.*

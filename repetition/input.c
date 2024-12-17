@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+
 // Function to print the binary representation of an 8-bit number
 void printBinary8(unsigned char n) {
     for (int i = 7; i >= 0; i--) {
@@ -8,6 +9,7 @@ void printBinary8(unsigned char n) {
 }
 
 int main() {
+printf("TESTING MAKEFILE\n");
     unsigned char a, b; // 8-bit unsigned integers
     unsigned char guess;
 

@@ -156,6 +156,32 @@ Pointers are variables that store the address of another variable.
     - The pointer can be used to point to a specific memory location, and the memory location can then be changed.
     
 
+# The C compiler
+Overall the compling consists of 
+- Preprocessing
+- Compilation
+- Assembly
+- Linking
+
+## Preprocessing
+The preprocessor is a program that is run before the compiler, this process scans the code and includes any files that are needed, expands macros etc. The preprocessor is also used to remove comments and to replace constants with their values. ***Errors occuring in this part of the process could be due to the #include files are not found *** _However warnings and errors related to C code is not checked at this stage._**
+
+## Compilation
+The compiler takes the code and turns it into assembly code. The assembly code is then turned into machine code. It is in this step that the compiler will check for errors and warnings. ***Errors checked here are related to syntax errors in the C code.***
+
+## Assembly
+The assembly code is then turned into machine code. This is done by the assembler. Assembly code is the lowest level of code that the computer can understand.
+- At this stage of the compilation process, .o files are created for the machine to read/understand.
+**Errors at this stage are rare, and no C code language errors are checked here**
+
+## Linking
+At this stage the .o files are linked together to create the final executable. 
+- Windows make them as ```.exe``` files
+- Linux make them as ```.out``` files
+- Mac just make them as files with no extension.
+The files consist of binary code that the computer can understand.
+
+
 # Hex Dump
 
 Hex dump er en tekst-fil, der viser en binær fil i en hexadecimal format. Dette er et af de mest almindelige formater for at vise binære data. 
