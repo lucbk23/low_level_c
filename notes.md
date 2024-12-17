@@ -11,6 +11,8 @@
     4. [`~` NOT](#-not)
     5. [`<<` LEFT SHIFT](#-left-shift)
     6. [`>>` RIGHT SHIFT](#-right-shift)
+    7. [Signed / Unsigned bits](#signed--unsigned-bits)
+    8. [ASCII table](#ascii-table)
 3. [Data types in C, and their typical memory(size)](#data-types-in-c-and-their-typical-memorysize)
 4. [Memory](#memory)
     1. [Memory allocation](#memory-allocation)
