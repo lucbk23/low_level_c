@@ -1,14 +1,49 @@
+# Table of contents
+
+1. [Binær forståelse](#binær-forståelse)
+    1. [Byte vs bits](#byte-vs-bits)
+    2. [Binary to decimal](#binary-to-decimal)
+    3. [Binary to hexadecimal](#binary-to-hexadecimal) 
+2. [Operators in C](#operators-in-c)
+    1. [`&` AND](#-and)
+    2. [`|` OR](#-or)
+    3. [`^` XOR](#-xor)
+    4. [`~` NOT](#-not)
+    5. [`<<` LEFT SHIFT](#-left-shift)
+    6. [`>>` RIGHT SHIFT](#-right-shift)
+3. [Data types in C, and their typical memory(size)](#data-types-in-c-and-their-typical-memorysize)
+4. [Memory](#memory)
+    1. [Memory allocation](#memory-allocation)
+    2. [Recursion](#recursion)
+    3. [Memory in strings](#memory-in-strings)
+    4. [Initialization](#initialization)
+    5. [sizeof](#sizeof)
+    6. [Pass by value vs. pass by reference](#pass-by-value-vs-pass-by-reference)
+    7. [Auto keyword](#auto-keyword)
+    8. [Static keyword](#static-keyword)
+    9. [Extern keyword](#extern-keyword)
+    10. [Const keyword](#const-keyword)
+    11. [Volatile keyword](#volatile-keyword)
+    12. [Sumamry of terms](#sumamry-of-terms)
+    13. [Pointers](#pointers)
+5. [The C compiler](#the-c-compiler)
+    1. [Preprocessing](#preprocessing)
+    2. [Compilation](#compilation)
+    3. [Assembly](#assembly)
+    4. [Linking](#linking)
+9. [Hex Dump](#hex-dump)
+
 # Binær forståelse
 Binary is a base-2 number system. It is the number system we use to represent data in computers.
 It can consist of 0's and 1's.
 
-# Byte vs bits
+## Byte vs bits
 - 1 byte = 8 bits
 - 1 bit is represented by a single digit in binary.
     - Binary is calculated by using the powers of 2. - That means that each space in the binary number system is a power of 2, which is 2^0, 2^1, 2^2, 2^3, 2^4, 2^5, 2^6, 2^7. *written the other way around, so starting from the right and going to the left*
 * Each whole row of 4 numbers in binary is a byte, which represents 8 bits and can be converted to a single digit in decimal.
 
-# Binary to decimal
+## Binary to decimal
  - For at konvertere resultatet til decimal, skal man multiplicere det tal (0 eller 1) med [fra højre] **2^0**, **2^1**, **2^2**, **2^3**, **2^4**, **2^5**, **2^6**, **2^7**.
     Eksempelvis: ```10101001```:
 
@@ -29,7 +64,7 @@ It can consist of 0's and 1's.
         - 11011010 = 110 (decimal)
         - 11101010 = 111 (decimal)
 
-# Binary to hexadecimal
+## Binary to hexadecimal
 
 - Binary to hexadecimal
     - Binary to hexadecimal
@@ -56,41 +91,41 @@ It can consist of 0's and 1's.
     - Hvis der ikke er 1 på de samme pladser, så returneres 0 i resultatet.
    
 
-- `|` OR
-    - What it does: Compares two bits and gives 1 if **either** bit is 1.
-    - Think of it like a flexible rule; if at least one thing is true, then the result is true (1).
-    - Example ```01010110 | 01101001 = 01111111
-    - Ovenover: Kig på *01101001* og *01010110* - lad os dele den op fra højre til venstre og sammenlign om der står 1 på de samme pladser.
-    - ```0110100__1__ | 0101011__0__``` = 1
-    - ```011010__0__1 | 010101__1__0``` = 1
-    - ```01101__0__01 | 01010__1__10``` = 1
-    - ```0110__1__001 | 0101__0__110``` = 1
-    - ```011__0__1001 | 010__1__0110``` = 1
-    - ```01__1__01001 | 01__0__10110``` = 1
-    - ```1__0__101001 | 0__1__010110``` = 1
-    - ```__0__10101001 | __0__1010110``` = 0
+## `|` OR
+- What it does: Compares two bits and gives 1 if **either** bit is 1.
+- Think of it like a flexible rule; if at least one thing is true, then the result is true (1).
+- Example ```01010110 | 01101001 = 01111111
+- Ovenover: Kig på *01101001* og *01010110* - lad os dele den op fra højre til venstre og sammenlign om der står 1 på de samme pladser.
+- ```0110100__1__ | 0101011__0__``` = 1
+- ```011010__0__1 | 010101__1__0``` = 1
+- ```01101__0__01 | 01010__1__10``` = 1
+- ```0110__1__001 | 0101__0__110``` = 1
+- ```011__0__1001 | 010__1__0110``` = 1
+- ```01__1__01001 | 01__0__10110``` = 1
+- ```1__0__101001 | 0__1__010110``` = 1
+- ```__0__10101001 | __0__1010110``` = 0
         - Set i bakspejlet er det her et virkelig dårligt binært tal at bruge som eksempel, dog kun fordi det viser et meget stort tal som virker dårligt i de forskellige usecases nedenfor. Hav det i mende når du læser det her.
 
-- `^` XOR	
-    - Its a little trickier; it gives true (1) if the two bits are different, and false (0) if they are the same.
-    - If you compare 2 light switches, and one is on and other is off, the result is true (1).
-    - If the two light switches are on, the result is false (0).
-    - If the two light switches are off, the result is false (0).
-    - If the two light switches are on and off, the result is true (1).
+## `^` XOR	
+ - Its a little trickier; it gives true (1) if the two bits are different, and false (0) if they are the same.
+ - If you compare 2 light switches, and one is on and other is off, the result is true (1).
+ - If the two light switches are on, the result is false (0).
+ - If the two light switches are off, the result is false (0).
+ - If the two light switches are on and off, the result is true (1).
 
-- `~` NOT
-    - What it does: Reverses all the bits. If it is a 1, it becomes a 0. If it is a 0, it becomes a 1.
-    - Example: ```01010110 = ~101```
+## `~` NOT
+ - What it does: Reverses all the bits. If it is a 1, it becomes a 0. If it is a 0, it becomes a 1.
+ - Example: ```01010110 = ~101```
 
-- `<<` LEFT SHIFT
-    - What it does: Shifts all the bits to the left by 1.
-    - Example: ```01010110 << 1 = 10101100```
+## `<<` LEFT SHIFT
+ - What it does: Shifts all the bits to the left by 1.
+ - Example: ```01010110 << 1 = 10101100```
 
-- `>>` RIGHT SHIFT
-    - What it does: Shifts all the bits to the right by 1.
-    - Example: ```10101100 >> 1 = 01010110```
+## `>>` RIGHT SHIFT
+- What it does: Shifts all the bits to the right by 1.
+- Example: ```10101100 >> 1 = 01010110```
     
-### Signed / Unsigned bits
+## Signed / Unsigned bits
 - Signed bits
      - Signed bits are the ones that are used to store negative numbers.
     - They are stored in two's complement format. Meaning they have a sign bit and a value bit.
@@ -102,6 +137,25 @@ It can consist of 0's and 1's.
     - Unsigned bits are the ones that are used to store positive numbers.
     - They are stored in one's complement format. Meaning they have a value bit. The value bit is used to store the actual value
     - Example: The number 128 is stored as 00000000 10000000. The value bit is 00000000 00000000.
+
+## ASCII table
+![alt text](1_rFEwJIMzpHHTb-MpoiLCAw.jpg)
+
+# Data types in C, and their typical memory(size)
+- char: 1 byte
+- short: 2 bytes
+- int: 4 bytes
+- long: 8 bytes
+- long long: 8 bytes
+- float: 4 bytes
+- double: 8 bytes
+- unsigned char: 1 byte
+- unsigned short: 2 bytes
+- unsigned int: 4 bytes
+- unsigned long: 8 bytes
+- unsigned long long: 8 bytes
+- unsigned float: 4 bytes
+- unsigned double: 8 bytes
 
 
 # Memory
@@ -137,6 +191,16 @@ When a string is declared, it is stored in the heap. It is possible to change th
 - Memory leaks can cause a program to use more and more memory, eventually causing the program to crash.
 - Memory leaks can also cause a program to use more and more memory, eventually causing the program to crash.
 - A key point to prevent this is always to pair ```malloc()``` with ```free()```.
+
+### Memory analogy
+Simple Analogy
+
+- Imagine a house (your program):
+
+    - Code segment: The blueprint of the house (instructions that don't change).
+    - Data segment: The furniture that comes with the house (static/global variables).
+    - Stack: The table you set up when cooking (temporary items for function calls).
+    - Heap: The attic where you store extra stuff when needed (dynamic memory).
 
 ### Initialization
 - Initialization is the process of assigning an initial value to a variable.
@@ -267,6 +331,91 @@ int main() {
     return 0;
 }
 ```
+
+Explanation: 
+- both 'a' and 'b' are automatic (auto) variables. The auto keyword is redundant in this case, but it is good practice to include it to make the code more readable.
+
+### Static keyword
+- The 'static' keyword in C serves two primary purposes:
+    - Controlling the scope of variables AND preserving their values between function calls.
+
+Example: 
+```
+#include <stdio.h>
+
+void counter() {
+    static int count = 0; // Initialized only once
+    count++;
+    printf("Count = %d\n", count);
+}
+
+int main() {
+    counter(); // Count = 1
+    counter(); // Count = 2
+    counter(); // Count = 3
+    return 0;
+}
+```
+Explanation: 
+- The variable 'count' is declared as 'static', which means it is only initialized once and retains its value between function calls.
+- the static keyword is limited to the scope of the function and file, it cannot be used outside of the function or file.
+
+To make it shared you can add the ```shared```keyword to the variable declaration as such: ```static shared int count = 0;```
+
+### Extern keyword
+- The 'extern' keyword is used to declare external variables.
+- It is used to declare variables that are defined in another file.
+
+Example: 
+```
+// file1.c
+#include <stdio.h>
+
+int shared = 42; // Definition of 'shared'
+
+void printShared() {
+    printf("Shared = %d\n", shared);
+}
+```
+```
+// file2.c
+#include <stdio.h>
+
+extern int shared; // Declaration of 'shared'
+
+int main() {
+    printf("Accessing shared from file2: %d\n", shared);
+    return 0;
+}
+```
+From there compile both files
+```
+gcc file1.c file2.c -o program
+```
+Output: 
+```
+Accessing shared from file2: 42
+```
+Explanation: 
+- The variable 'shared' is declared as 'extern' in file1.c, which means it is defined in another file.
+
+### Const keyword
+- The 'const' keyword is used to declare read-only variables.
+    Once a const variable is declared/initialized, it cannot be changed throughout the program.
+    - Example: ```const int MAX = 100;``` // MAX is a constant variable that can only be assigned a value of 100.
+    Any attempt to change the value of MAX will result in a compilation error. MAX is immutable.
+- Can be used to protect data that should not be modified.
+- It is good practice to use const whenever possible to prevent accidental modification of data.
+
+### Volatile keyword
+- The volatile keyword is used to declare variables that can change value at any time.
+- It is used to prevent the compiler from optimizing the code.
+- Example: ```volatile int counter = 0;``` // counter is a volatile variable that can change value at any time.
+- Great to use in Hardware registers, interrupts and other hardware-related code.
+    It is a keyword assigned to a variable, preferably at the beginning of a function or a file, so that the compiler knows that the variable can change value at any time.
+
+### Sumamry of terms
+![alt text](image.png)
 
 ### Pointers
 Pointers are variables that store the address of another variable.
