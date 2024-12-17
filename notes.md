@@ -116,7 +116,8 @@ Recursion occurs when a function calls itself to solve a smaller instance of a p
 
 ![alt text](18315740-285b-4aa7-ad02-3c653275b289.webp)
 
-- watch the squares and pay attention to the values and their addresses, they are the seperate stacks that memory wise work as below:
+- watch the squares and pay attention to the values and their addresses, they are the seperate stacks that memory-management is based on.
+
 ![alt text](20240907_174709.webp)
 
 ### Memory in strings
@@ -136,7 +137,136 @@ When a string is declared, it is stored in the heap. It is possible to change th
 - Memory leaks can cause a program to use more and more memory, eventually causing the program to crash.
 - Memory leaks can also cause a program to use more and more memory, eventually causing the program to crash.
 - A key point to prevent this is always to pair ```malloc()``` with ```free()```.
-     
+
+### Initialization
+- Initialization is the process of assigning an initial value to a variable.
+#### Why it is important: 
+- Predictability: Initialized variables behave predicably from the start, which can help with debugging and testing.
+- Avoiding undefined behavior: Using uninitialized variables can lead to undefined behavior, which can cause the program to crash or produce incorrect results.
+Example: 
+```int a = 10;``` // a is initialized with the value 10
+```char letter = 'A';``` // letter is initialized with the character 'A'	
+Explanation:
+- In the first line the integer variable 'a' is initialized with the value 10. This means that the variable will always have the value 10 from the start of the program.
+- In the second line the character variable 'letter' is initialized with the character 'A'. This means that the variable will always have the value 'A' from the start of the program.
+
+### sizeof
+- The sizeof operator is used to determine the size of a variable in bytes.
+- it returns the size of the variable in bytes.
+#### Why it is important:
+- Portability: Helps write code that is portable across different systems by not hardcoding memory sizes. 
+- Memory management: Assists in dynamic memory allocation to ensure enough memory is allocated for data types. 
+Example:
+
+```
+#include <stdio.h>
+
+int main() {
+    int num = 5;
+    printf("Size of int: %zu bytes\n", sizeof(int));
+    printf("Size of num: %zu bytes\n", sizeof(num));
+    return 0;
+}
+```
+Output:
+```
+Size of int: 4 bytes
+Size of num: 4 bytes
+```
+Explanation: 
+- ```sizeof(int)``` returns the size of an integer in bytes, which is 4 on most systems.	
+- ```sizeof(num)``` returns the size of the variable 'num' in bytes, which is also 4 on most systems.
+
+This can also be used to determine the size of arrays:
+```
+int arr[10];
+size_t size = sizeof(arr) / sizeof(arr[0]); // Calculates the number of elements
+```
+
+### Pass by value vs. pass by reference
+Overall this is crucial to understanding how data is manipulated in C.
+
+#### Pass by value
+- Passing by value means that a copy of the value is passed to the function.
+- Changes made to the parameter inside the function will not affect the original variable.
+Example:
+```
+#include <stdio.h>
+
+void increment(int x) {
+    x = x + 1;
+    printf("Inside function: x = %d\n", x);
+}
+
+int main() {
+    int a = 5;
+    increment(a);
+    printf("Outside function: a = %d\n", a);
+    return 0;
+}
+```
+Output:
+```
+Inside function: x = 6
+Outside function: a = 5
+```
+Explanation:
+- The function 'increment' recieves a copy of 'a (x)', increments it, but 'a' remains unchanged outside the function. 
+
+#### Pass by reference
+- Pass by reference involves passing the address of the variable to the function using pointers. 
+- Changes made to the parameter inside the function will affect the original variable.
+Example: 
+```
+#include <stdio.h>
+
+void increment(int *x) {
+    *x = *x + 1;
+    printf("Inside function: x = %d\n", *x);
+}
+
+int main() {
+    int a = 5;
+    increment(&a);
+    printf("Outside function: a = %d\n", a);
+    return 0;
+}
+```
+Output: 
+```
+Inside function: x = 6
+Outside function: a = 6
+```
+Explanation:
+- The function 'increment' receives the address of 'a (x)' using a pointer, increments it, and 'a' is updated outside the function.
+
+## When to use pass by value vs. pass by reference
+- Pass by Value:
+    - When you want to ensure that the original variable remains unchanged.
+- Pass by Reference:
+    - When you need the function to modify the original variable or when passing large data structures for efficiency.
+
+
+### Auto keyword
+
+- The 'auto' keyword is used to declare automatic variables. 
+- Usage is largely implicit and often omitted, because variables declared within the functions are automatically 'auto' by default.
+- It is a good practice to use 'auto' for variables that are only used within the function, as it helps avoid potential errors and makes the code more readable.
+
+- Definition:
+    - Automatic Variables (auto): Variables that are declared inside a function and are automatically allocated and deallocated on the stack when the function is called and returns, respectively
+
+Example: 
+```
+#include <stdio.h>
+
+int main() {
+    auto int a = 10; // 'auto' keyword is optional here
+    int b = 20;      // Equivalent to 'auto int b = 20;'
+    printf("a = %d, b = %d\n", a, b);
+    return 0;
+}
+```
 
 ### Pointers
 Pointers are variables that store the address of another variable.
@@ -180,6 +310,25 @@ At this stage the .o files are linked together to create the final executable.
 - Linux make them as ```.out``` files
 - Mac just make them as files with no extension.
 The files consist of binary code that the computer can understand.
+
+## From the podcast
+Think of the compiler as a translator. It takes human words and transates them into machine code. 
+The compiler also acts as quality control.
+Loop unrolling: The compiler will unroll loops for you.
+- Preprocessing: #include files using this is like including a library, so you can fetch certain functions from that library.
+- Compilation: The compiler translates this code into assembly code, which is a low level representation of the code which the computer can understand.
+- Assembly: The assembly code is translated into machine code, which is the lowest level of code that the computer can understand.
+- Linking: All of the above steps are linked together to create a .exe file or .out file.
+- Libraries: The compiler will also fetch certain libraries from the internet, so you can use certain functions from those libraries.
+    - Different types of libraries: 
+        - Static libraries: These are libraries that are stored on your computer, so you can use them in your program.
+                - Downside: Baked directly into the program, so you can't update the library without recompiling the program. Also the .exe file is larger.
+                - Upside: Programs become self-contained, so you don't need to worry about the libraries being updated.
+        - Dynamic libraries: Also known as shares libraries. These libraries are loaded into the computer's memory when the program is run, so you don't need to worry about the libraries being updated.
+                - Downside: You need to download the library before you can use it.
+                - Upside: Since the library is loaded directly, you dont have to recompile you can just update the library and the program will work.
+
+## Role of the Header files
 
 
 # Hex Dump
