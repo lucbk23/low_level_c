@@ -69,6 +69,7 @@ It can consist of 0's and 1's.
     - ```01__1__01001 | 01__0__10110``` = 1
     - ```1__0__101001 | 0__1__010110``` = 1
     - ```__0__10101001 | __0__1010110``` = 0
+        - Set i bakspejlet er det her et virkelig dårligt binært tal at bruge som eksempel, dog kun fordi det viser et meget stort tal som virker dårligt i de forskellige usecases nedenfor. Hav det i mende når du læser det her.
 
 - `^` XOR	
     - Its a little trickier; it gives true (1) if the two bits are different, and false (0) if they are the same.
@@ -118,6 +119,24 @@ Recursion occurs when a function calls itself to solve a smaller instance of a p
 - watch the squares and pay attention to the values and their addresses, they are the seperate stacks that memory wise work as below:
 ![alt text](20240907_174709.webp)
 
+### Memory in strings
+When a string is declared, it is stored in the heap. It is possible to change the value of a string in the stack, but it leaves the value of the declared variable on the same address in the heap.
+- Example: ```char word[4] = {99, 97, 116, 0};``` 
+    - This creates a string with 4 characters, and stores the value of each character in the array.
+    - If you change the value of 99 to 100, the value of the string is changed but the address is unchanged if the call structure is the same.
+    - Initializing 2 arrays will retun the addresses of the last most initialized array as "higher" in the stack.
+    - Earlier we have been able to redeclare addresses within other variables each other: ```b = a; ```, this is not possible with arrays in C, they are unique in the heap.
+    - If we want to change/copy the value of an array, we have to do it manually or with a loop. The loop looks like this:
+        - ```for (int i = 0; i < 4; i++)```
+    - We do need to hardcode the size of the array, because the size is not stored in the variable.
+
+### Memory leaks
+- Memory leaks are when a program allocates memory but does not free it.
+- This can happen when a program is not finished, or when a program is running for a long time.
+- Memory leaks can cause a program to use more and more memory, eventually causing the program to crash.
+- Memory leaks can also cause a program to use more and more memory, eventually causing the program to crash.
+- A key point to prevent this is always to pair ```malloc()``` with ```free()```.
+     
 
 ### Pointers
 Pointers are variables that store the address of another variable.
@@ -135,7 +154,7 @@ Pointers are variables that store the address of another variable.
     - For instance you can have a variable that has a value, which is then placed at a specific address in the heap, then you can chose to point to that variable and place it in a different location in the heap.
     - This is called **dynamic memory allocation**.
     - The pointer can be used to point to a specific memory location, and the memory location can then be changed.
-    # DER MANGLER FLERE NOTER TIL MEMORY
+    
 
 # Hex Dump
 
