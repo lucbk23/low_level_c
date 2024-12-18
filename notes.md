@@ -1,4 +1,4 @@
-# Table of contents
+# Table of contents - Forhåbentligt et cheatsheet til C
 
 1. [Binær forståelse](#binær-forståelse)
     - [Byte vs bits](#byte-vs-bits)
@@ -34,14 +34,37 @@
     - [Compilation](#compilation)
     - [Assembly](#assembly)
     - [Linking](#linking)
-9. [Hex Dump](#hex-dump)
-10. [Eksamensøvelser](#eksamensøvelser)
+6. [CPU Architecture](#cpu-architecture)
+    - [Von Neumann Architecture](#von-neumann-architecture)
+    - [Harvard Architecture](#harvard-architecture)
+    - [Address Bus](#address-bus)
+    - [Data Bus](#data-bus)
+    - [Control Bus](#control-bus)
+7. [Microcontrollers and hardwareprogramming](#microcontrollers-and-hardwareprogramming)
+8. [Hex Dump](#hex-dump)
+9. [Eksamensøvelser](#eksamensøvelser)
     - [Bit shifting og ASCII](#bit-shifting-og-ascii)
     - [Array Indexering](#array-indexering)
         - [Code snippet:](#code-snippet)
         - [Opgavebeskrivelse](#opgavebeskrivelse)
         - [Key notes:](#key-notes)
         - [Assembly calculation](#assembly-calculation)
+    - [String arrays and pointers](#string-arrays-and-pointers)
+        - [String1:](#string1)
+        - [String2:](#string2)
+        - [Printout functions](#printout-functions)
+            - [Pointer-based iteration](#pointer-based-iteration)
+            - [Index-based iteration](#index-based-iteration)
+            - [Pointer-based iteration techinal assembly](#pointer-based-iteration-techinal-assembly)
+            - [Index-based iteration techinal assembly](#index-based-iteration-techinal-assembly)
+            - [Memory Access Patterns](#memory-access-patterns)
+            - [Assembly differences](#assembly-differences)
+                - [Pointer-Based](#pointer-based)
+                - [Index-Based](#index-based)
+        - [Loops](#loops)
+            - [Loop 1:](#loop-1)
+            - [Loop 2:](#loop-2)
+            - [Loop 3:](#loop-3)
 
 
 
@@ -176,6 +199,76 @@ In C, memory management refers to the allocation, use and deallocation of memory
 Memory is divided into 2 main areas: 
 - Stack - This is the order in which functions and the variables are called in the program. The stack is simply explained as a stack of books, you can only access the top of the stack, and you can only add books to the top of the stack.
 - Heap - This is best explained as a "grid" where you can point to a specific "square" in the grid to which you chose to allocate certain calls, these calls are then located at a specific address in the heap. The heap is the area where the actual data is stored.
+
+*Less technical visualization*
+```
++-----------------------------+
+|         High Memory         |
++-----------------------------+
+|        Read-Only Data       |
+|        (e.g., string        |
+|        literals)            |
++-----------------------------+
+|        Initialized Data     |
+|        (Global Variables)   |
++-----------------------------+
+|        Uninitialized Data   |
+|        (BSS Segment)        |
++-----------------------------+
+|            Heap             |
+|  (Dynamic Memory Allocation)|
+|  Grows upwards              |
++-----------------------------+
+|            Stack            |
+|  (Function Calls, Local     |
+|   Variables)                |
+|  Grows downwards            |
++-----------------------------+
+|          Low Memory         |
++-----------------------------+
+```
+
+*More technical visualization*
+```
++-----------------------------+
+|         High Memory         |
++-----------------------------+
+|        Read-Only Data       |
+|        (e.g., string        |
+|        literals)            |
++-----------------------------+
+|        Initialized Data     |
+|        (Global Variables)   |
++-----------------------------+
+|        Uninitialized Data   |
+|        (BSS Segment)        |
++-----------------------------+
+|            Heap             |
+|  (Dynamic Memory Allocation)|
+|  Grows upwards              |
+|  [malloc] --> [Memory A]    |
+|              [Memory B]     |
+|              ...            |
++-----------------------------+
+|            Stack            |
+|  (Function Calls, Local     |
+|   Variables)                |
+|  Grows downwards            |
+|  +-----------------------+  |
+|  |  Local Variables      |  |
+|  |  e.g., int stackVar   |  |
+|  |  int *heapVar         |  |
+|  +-----------------------+  |
+|  |  Return Address       |  |
+|  +-----------------------+  |
+|  |  Previous Stack Frame |  | 
+|  +-----------------------+  |
+|        ... (Other stack     |
+|        frames)              |
++-----------------------------+
+|          Low Memory         |
++-----------------------------+
+```
 
 ### Recursion
 Recursion occurs when a function calls itself to solve a smaller instance of a problem until a base condition is met. Each recursive call creates a *new stack frame* with its own set of variables. Therefore the addresses of the same integers for instance, can actually have the same value but different addresses since they are called recursively and in their own stack. 
@@ -457,10 +550,47 @@ Pointers are variables that store the address of another variable.
 
 # The C compiler
 Overall the compling consists of 
-- Preprocessing
-- Compilation
-- Assembly
-- Linking
+- Preprocessing (the -E flag) eg. `gcc -E array.c -o array.i` - Processes directives.
+- Compilation (the -S flag) eg. `gcc -S array.i -o array.s` - Compiles to assembly.
+- Assembly (the -c flag) eg. `gcc -c array.s -o array.o` - Compiles to object code.
+- Linking (the -o flag) eg. `gcc array.o -o array.exe` - Links object code to executable.
+
+```
++-------------------+
+|  Source Code (C)  |
++-------------------+
+          |
+          v
++-------------------+
+|    Preprocessing  |
+|  (Handles #include|
+|   and Macros)     |
++-------------------+
+          |
+          v
++-------------------+
+|    Compilation    |
+| (C Code to Assembly)|
++-------------------+
+          |
+          v
++-------------------+
+|     Assembly      |
+|(Assembly to Object)|
++-------------------+
+          |
+          v
++-------------------+
+|      Linking      |
+| (Combine Object   |
+|   Files into Exec)|
++-------------------+
+          |
+          v
++-------------------+
+|   Executable File |
++-------------------+
+```
 
 ## Preprocessing
 The preprocessor is a program that is run before the compiler, this process scans the code and includes any files that are needed, expands macros etc. The preprocessor is also used to remove comments and to replace constants with their values. ***Errors occuring in this part of the process could be due to the #include files are not found *** _However warnings and errors related to C code is not checked at this stage._**
@@ -499,9 +629,55 @@ Loop unrolling: The compiler will unroll loops for you.
 
 ## Role of the Header files
 
-
 # CPU Architecture
 This chapter will cover the architecture of the CPU.
+## Registers
+
+## Assembler
+- X86 is the most common architecture for computers. - It allows operations directly on memory and registers.
+- AVR is a microcontroller architecture that is very similar to x86.
+- X86
+    - Load-Store Architecture
+        - Allows operations directly on memory and registers.
+        - Follows a CISC architecture (Complex Instruction Set Computer) approach, where all instructions are executed in a single clock cycle. This allows for complex instructions that can directly manipulate memory.
+    - Move Architecture
+        - Supports moving data between memory and registers without additional load/store instructions.
+    - Immediate Values
+        - X86 supports various operand sized with immediate values. These are fixed numbers used directly in instructions.
+    - Direct Addressing
+        - X86 supports direct addressing, where the address of a memory location is specified directly in the instruction.
+    - Indirect Addressing
+        - X86 supports indirect addressing, where the address of a memory location is specified indirectly in the instruction.
+        - X86 Uses registers like BX, SI, DI, BP, SP to specify the address of a memory location.
+    - Compare operations
+        - Compare operations check how two values relate (equal, greater than, less than, etc.).
+        - X86 supports various compare operations, such as CMP, TEST, CMPS, SCAS, etc.
+    - Status-Register flags
+        - Indicators that show the result of a compare operation.
+        - X86 supports various status-register flags, such as ZF, CF, OF, SF, PF, AF, etc.
+    - Branching
+        - Changes the program path based on flag statuses.
+    - Moving data 
+        - MOV instruction moves data between registers and memory.
+        - MOVZX instruction moves data between registers and memory, and zero-extends the data.
+fuck it check the picture. do a quick google or AI prompt if you need to. make sure you understand the differences between the different architectures.
+- AVR
+    - Load-Store Architecture
+        - Uses seperate instructions for loading and storing to memory.
+        - Follows a RISC-like approach, where only load and store instructions access memory. All arithmetic operations are done in registers.
+    - Move Architecture
+        - Relies on explicit load and store instructions for memory operations.
+
+![alt text](image-2.png)
+
+## Bus width / register width
+- The width of the bus is the number of bits that can be transferred at once.
+- The width of the register is the number of bits that can be stored in a single register.
+- The width of the bus and the width of the register are related to each other.
+    - The width of the bus must be greater than or equal to the width of the register.
+    - The width of the register must be a power of 2.
+    - For example, a 16-bit bus can transfer 16 bits at a time, while a 32-bit bus can transfer 32 bits at a time.
+    - A 16-bit register can store 16 bits, while a 32-bit register can store 32 bits.
 
 ## Von Neumann Architecture
 - The CPU is made up of a central processing unit (CPU) and a memory.
@@ -565,7 +741,17 @@ This bus is like the traffic lights that control the delivery truck and coordina
         - Clock (CLK): Synchronizes the operations of the CPU and memory.
     - Analogy: The control bus is like the traffic lights that control the delivery truck (data and address buses) when to stop, go or change direction.
 
+## Memory
+![alt text](image-3.png)
+### Memory map
+![alt text](image-4.png)
 
+# Microcontrollers and hardwareprogramming
+- Concept of microcontrollers
+![concept](image-5.png)
+
+- Interrupts
+![interrupts](image-6.png)
 # Hex Dump
 
 Hex dump er en tekst-fil, der viser en binær fil i en hexadecimal format. Dette er et af de mest almindelige formater for at vise binære data. 
@@ -741,3 +927,188 @@ Next part of the assembly code:
 | pushfq              | Pushes the flags register onto the stack.                                                   |
 | popfq               | Pops the flags register from the stack.                                                     |
 ---------------------------------------------------------------------------------------------------------------------
+## String arrays and pointers
+Opgavebeskrivelse
+- 2 different ways to make a string:
+```
+char pet[] = "dog";
+```
+```
+char* pet = "cat";
+```
+- 2 different ways to print a string
+```
+  char *word = pet;
+  while (*word)
+  {
+    putchar(*word++);
+  }
+  ```
+  ```
+    int i=0;
+  while (pet[i])
+  {
+    putchar(pet[i++]);
+  }
+  ```
+- Hvilke udskrifts-måder passer med hvilke måder at lave strengen på? Kan de bruges på kryds og tværs?
+- Hvad er forskellen på den assembly-kode der bliver genereret for de to udskriftsmåder? Og hvorfor vil de begge virke, eller kun en af dem virke, på begge strenge, eller kun en af strengene?
+
+### String1:
+- The first string is an array initialization, which allocates memory for the array on the stack and initializes it with the values 'd', 'o', 'g', and '\0' (null character).
+- Mutability: This array is mutable, meaning that its elements can be modified after it is declared. 
+
+### String2:
+- The second string is a pointer initialization, the pointer points to a string literal, which is stored in read-only memory.
+- Immutability: This string is immutable, meaning that its elements cannot be modified after it is declared. If trying to modify the string, the program will result in a segmentation fault.
+
+## Printout functions
+### Printout function 1
+- The first printout function is a Pointer-based iteration, which iterates over the characters in the string using a pointer.
+- Usage: This function would work seamlessly with both the array and pointer-based initialization methods.
+- Behavior: Iterates through each character by moving the pointer to the next character in the string.
+
+```
+  char *word = pet;
+  while (*word)
+  {
+    putchar(*word++);
+  }
+  ```
+  ### Printout function 2
+- The second printout function is an index-based iteration, which iterates over the characters in the string using an index.
+- Usage: This function is also compatible with both the array and pointer-based initialization methods.
+- Behavior: Iterates through each character by accessing the character at the current index in the string.
+
+```
+    int i=0;
+  while (pet[i])
+  {
+    putchar(pet[i++]);
+  }
+  ```
+  ### Assembly translation
+  #### Pointer-based iteration
+  - The pointer-based iteration is translated into assembly code as follows:
+    - Load Address: The address of pet is loaded into a register.
+    - Loop Start: Checks the value pointed to by the register.
+    - Output Character: Uses system calls to print the character.
+    - Increment Pointer: Adds to the register to point to the next character.
+    - Loop Control: Jumps back if the current character isn't the null terminator.
+#### Index-based iteration
+- The index-based iteration is translated into assembly code as follows:
+    - Initialize Index: Sets the index (i) to zero.
+    - Loop Start: Calculates the memory address by adding the index to the base address of pet.
+    - Check Character: Loads the character at the calculated address.
+    - Output Character: Uses system calls to print the character.
+    - Increment Index: Increases the index to move to the next character.
+    - Loop Control: Jumps back if the current character isn't the null terminator.
+
+#### Pointer-based iteration techinal assembly
+* The pointer-based iteration is translated into assembly code as follows:
+    - Register Usage: A register holds the current character's address.
+    - Load Effective Address (LEA): Loads the starting address of pet into a register.
+    - Load Byte (LB): Fetches the byte at the current address.
+    - Compare and Branch: Checks if the byte is not zero ('\0').
+    - Output Character: Calls the putchar function with the byte.
+    - Increment Pointer: Adds 1 to the register to move to the next byte.
+    - Loop Control: Jumps back to the comparison step if not at the end.
+#### Index-based iteration techinal assembly
+* The index-based iteration is translated into assembly code as follows:
+    - Register Usage: One register holds the base address of pet, another holds the index i.
+    - Initialize Index: Sets the index register to 0.
+    - Calculate Address: Multiplies the index by the size of char (1 byte) and adds it to the base address.
+    - Load Byte (LB): Fetches the byte at the calculated address.
+    - Compare and Branch: Checks if the byte is not zero.
+    - Output Character: Calls the putchar function with the byte.
+    - Increment Index: Adds 1 to the index register.
+    - Loop Control: Jumps back to the address calculation step if not at the end.
+#### Memory Access Patterns
+- Both methods access memory sequentially, which is cache-friendly and efficient.
+- Pointer arithmetic directly modifies the memory address, whereas index-based iteration recalculates the address each time based on the index.
+
+Assembly Differences:
+
+Pointer-Based: Utilizes pointer arithmetic with register increments.
+Index-Based: Involves calculating memory addresses using the base address plus index offsets.
+```
++----------------------------+
+|        High Memory         |
++----------------------------+
+|      Read-Only Data        |
+|     "cat" String Literal   | <- `char* pet = "cat";` points here
++----------------------------+
+|          Heap              |
+|      (Not Used Here)       |
++----------------------------+
+|          Stack             |
+|  +----------------------+  |
+|  |    char pet[]        |  | <- `char pet[] = "dog";` resides here
+|  |    ['d','o','g', '\0']| |
+|  +----------------------+  |
+|  |    char* pet         |  | <- Pointer `pet` pointing to "cat"
+|  +----------------------+  |
+|  |    char* word        |  | <- Pointer-based iteration variable
+|  +----------------------+  |
+|  |    int i             |  | <- Index-based iteration variable
+|  +----------------------+  |
+|        ... (Other          |
+|        stack variables)    |
++----------------------------+
+|        Low Memory          |
++----------------------------+
+```
+## Loops
+Opgavebeskrivelse:
+-  Alle funktioner har samme … funktion … - hvad gør de?
+
+- Vis hvordan de forskellige funktioner bliver fortolket til assembly - og hvad der præcis giver forskellene (eller lighederne) i C-koden.
+
+- Argumentér for hvorfor en af funktionerne eventuelt ville være at foretrække frem for de andre. Er ulemper og fordele synlige i assembly?
+
+*Global variabel* 
+```char word[] = "cat";```
+### Loop 1
+```
+int a()
+{
+  int i = 0;
+  while(word[i]) 
+  {
+    i++;
+  }
+  return i;
+} 
+```
+### Loop 2
+```
+int b()
+{
+  int i = 0;
+  while(1)
+  {
+    if(word[i] == 0)
+      break;
+    i++;
+  }
+  return i;
+}
+```
+### Loop 3
+```
+int c()
+{
+  int i = 0;
+  while(1)
+  {
+    if(word[i] == 0)
+      goto out;
+    i++;
+  }
+out:
+  return i;
+}
+```
+- All three functions calculate and return the length of the global string word. They iterate through each character in the word array until they encounter the null terminator ('\0'), incrementing the counter i to determine the total number of characters.
+- All 3 loops give the same assembly code. This is also partly because of the compilers optimizations.
+Although function A is to prefer, because of the use of a simple `while` loop condition, making the intent clear.
