@@ -1,38 +1,39 @@
 # Table of contents
 
 1. [Binær forståelse](#binær-forståelse)
-    1. [Byte vs bits](#byte-vs-bits)
-    2. [Binary to decimal](#binary-to-decimal)
-    3. [Binary to hexadecimal](#binary-to-hexadecimal) 
+    - [Byte vs bits](#byte-vs-bits)
+    - [Binary to decimal](#binary-to-decimal)
+    - [Binary to hexadecimal](#binary-to-hexadecimal) 
 2. [Operators in C](#operators-in-c)
-    1. [`&` AND](#-and)
-    2. [`|` OR](#-or)
-    3. [`^` XOR](#-xor)
-    4. [`~` NOT](#-not)
-    5. [`<<` LEFT SHIFT](#-left-shift)
-    6. [`>>` RIGHT SHIFT](#-right-shift)
-    7. [Signed / Unsigned bits](#signed--unsigned-bits)
-    8. [ASCII table](#ascii-table)
+    - [`&` AND](#-and)
+    - [`|` OR](#-or)
+    - [`^` XOR](#-xor)
+    - [`~` NOT](#-not)
+    - [`<<` LEFT SHIFT](#-left-shift)
+    - [`>>` RIGHT SHIFT](#-right-shift)
+    - [Signed / Unsigned bits](#signed--unsigned-bits)
+    - [ASCII table](#ascii-table)
 3. [Data types in C, and their typical memory(size)](#data-types-in-c-and-their-typical-memorysize)
 4. [Memory](#memory)
-    1. [Memory allocation](#memory-allocation)
-    2. [Recursion](#recursion)
-    3. [Memory in strings](#memory-in-strings)
-    4. [Initialization](#initialization)
-    5. [sizeof](#sizeof)
-    6. [Pass by value vs. pass by reference](#pass-by-value-vs-pass-by-reference)
-    7. [Auto keyword](#auto-keyword)
-    8. [Static keyword](#static-keyword)
-    9. [Extern keyword](#extern-keyword)
-    10. [Const keyword](#const-keyword)
-    11. [Volatile keyword](#volatile-keyword)
-    12. [Sumamry of terms](#sumamry-of-terms)
-    13. [Pointers](#pointers)
+    - [Memory allocation](#memory-allocation)
+    - [Recursion](#recursion)
+    - [Memory in strings](#memory-in-strings)
+    - [Initialization](#initialization)
+    - [sizeof](#sizeof)
+    - [Pass by value vs. pass by reference](#pass-by-value-vs-pass-by-reference)
+    - [Auto keyword](#auto-keyword)
+    - [Static keyword](#static-keyword)
+    - [Extern keyword](#extern-keyword)
+    - [Const keyword](#const-keyword)
+    - [Volatile keyword](#volatile-keyword)
+    - [Making global variables](#making-global-variables)
+    - [Sumamry of terms](#sumamry-of-terms)
+    - [Pointers](#pointers)
 5. [The C compiler](#the-c-compiler)
-    1. [Preprocessing](#preprocessing)
-    2. [Compilation](#compilation)
-    3. [Assembly](#assembly)
-    4. [Linking](#linking)
+    - [Preprocessing](#preprocessing)
+    - [Compilation](#compilation)
+    - [Assembly](#assembly)
+    - [Linking](#linking)
 9. [Hex Dump](#hex-dump)
 
 # Binær forståelse
@@ -415,6 +416,14 @@ Explanation:
 - Example: ```volatile int counter = 0;``` // counter is a volatile variable that can change value at any time.
 - Great to use in Hardware registers, interrupts and other hardware-related code.
     It is a keyword assigned to a variable, preferably at the beginning of a function or a file, so that the compiler knows that the variable can change value at any time.
+
+
+### Making global variables
+Global variables are variables that can be accessed from anywhere in the program.
+- Global variables are declared outside of any function. (also main)
+- Can be accessed from anywhere if used with the extern keyword.
+- SHARED VARIABLES CAN BE GLOBAL VARIABLES BUT NOT ALL GLOBAL VARIABLES ARE SHARED VARIABLES. 
+- Shared variables exist specifically in programs involving multiple processes, multithreading, and inter-process communication.
 
 ### Sumamry of terms
 ![alt text](image.png)
