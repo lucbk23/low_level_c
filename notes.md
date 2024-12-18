@@ -35,6 +35,15 @@
     - [Assembly](#assembly)
     - [Linking](#linking)
 9. [Hex Dump](#hex-dump)
+10. [Eksamensøvelser](#eksamensøvelser)
+    - [Bit shifting og ASCII](#bit-shifting-og-ascii)
+    - [Array Indexering](#array-indexering)
+        - [Code snippet:](#code-snippet)
+        - [Opgavebeskrivelse](#opgavebeskrivelse)
+        - [Key notes:](#key-notes)
+        - [Assembly calculation](#assembly-calculation)
+
+
 
 # Binær forståelse
 Binary is a base-2 number system. It is the number system we use to represent data in computers.
@@ -594,3 +603,141 @@ Hex dump er en tekst-fil, der viser en binær fil i en hexadecimal format. Dette
 4. For at vise en fil i hexadecimaler og vise den i et tekst format. *Til denne så brug hexdump, den giver det bedste resultat at vise det i*
 5. For at søge efter en bestemt sekvens af bits i en fil *Til denne så brug hexdump, den giver det bedste resultat at vise det i*
 
+# Eksamensøvelser
+
+## Bit shifting og ASCII
+
+## Array Indexering
+### Code snippet:
+```
+#include <stdio.h>
+
+int main()
+{
+  char letters[] = {'a', 'b', 'c', 'd', 'e', 'f'};
+
+  for (int i = 0; i < 6; i++)
+  {
+    printf("Letter @ index %d is '%c'\n", i, i[letters]);
+  }
+
+  return 0;
+}
+```
+#### Opgavebeskrivelse
+- På trods af hvad det måske ser ud til, er der ingen fejl i dette program:
+- Hvorfor ser det ud som om der er en fejl? Og hvorfor virker det alligevel?
+
+- Forklar præcis hvordan array-indexet bliver beregnet.
+
+- Vis hvordan beregningen foregår i assembler (maskinkode) - og vis også den udgave der ser mere korrekt ud.
+#### Key notes:
+- The program looks wrong because it is using the ```i[letters]``` - the more common use is ```letters[i]```
+- The compiler interprets both as ```*(letters + i)```
+- At assembly level, the calculation involves adding the base address of *letters* to the index *i*, multiplied by the size of each element.
+- Regardless of the order: the indexing works as long as one operand is a pointer and the other is an integer.
+
+#### Assembly calculation
+1. Suppose ```letters``` is at address ```0x1000```.
+2. Each ```char ``` in the array occupies 1 byte. 
+3. In the 'for' loop: the index calculatiion is ```i=2``` so ```letters + i ``` results in ```0x1000 + (2*1) = 0x1002```
+4. The value at ```0x1002```(which is 'c') is dereferenced and used. 
+**Dereferencing**
+- In C, dereferencing is like opening an envelope to read the letter (actual piece of paper, nothing to do with the array above) inside. Think of a pointer as an address (the envelope), and dereferencing is the act of going to that actual address and retrieving the actual value (the letter).
+
+#### Assembly code
+* Breaking down the assembly code:
+```
+push    rbp              ; Save the base pointer of the calling function.
+mov     rbp, rsp         ; Establish a new base pointer for the current function.
+sub     rsp, 16          ; Allocate 16 bytes of space on the stack for local variables.
+```
+* The first line is the push instruction, which is used to save the current value of the base pointer (rbp) on the stack.
+* The second line is the mov instruction, which is used to establish a new base pointer for the current function.
+* The third line is the sub instruction, which is used to allocate 16 bytes of space on the stack for local variables.
+
+This sets up the stack frame for the function, which includes the base pointer and the local variables.
+
+```
+mov     DWORD PTR [rbp-10], 1684234849  ; Store 1684234849 at `[rbp-10]`.
+mov     WORD PTR [rbp-6], 26213         ; Store 26213 at `[rbp-6]`.
+mov     DWORD PTR [rbp-4], 0            ; Initialize `[rbp-4]` (a counter) to 0.
+```
+* word for word: mov instruction that moves a 16-bit value from one location to another.
+* DWORD PTR: (double word pointer): specifies that the source and destination are memory addresses, and stores them at the abovementioned address. ```[rbp-10]``` likely represents the start of an array in memory.
+* The first line moves the value 1684234849 to the memory address at `[rbp-10]`.
+* The second line moves the value 26213 to the memory address at `[rbp-6]`, likely the next 2 bytes in the array.
+* The third line initializes the counter at `[rbp-4]` to 0.
+
+Next part of the code:
+
+```
+jmp     .L2               ; Jump to the loop condition check.
+```
+* the `jmp` instruction jumps to the loop condition check.
+
+Next part of the assembly code: 
+```
+.L3:                            ; Loop body label.
+    mov     eax, DWORD PTR [rbp-4]       ; Load the loop counter into `eax`.
+    cdqe                                ; Convert `eax` to `rax` (zero/sign-extend).
+    movzx   eax, BYTE PTR [rbp-10+rax]  ; Access the byte at `[rbp-10 + rax]`.
+    movsx   edx, al                     ; Sign-extend the byte value into `edx`.
+    mov     eax, DWORD PTR [rbp-4]      ; Reload the loop counter.
+    mov     esi, eax                    ; Move the loop counter into `esi` (argument for `printf`).
+    mov     edi, OFFSET FLAT:.LC0       ; Load the format string address into `edi`.
+    mov     eax, 0                      ; Set `eax` to 0 (for `printf` call convention).
+    call    printf                      ; Call `printf`.
+    add     DWORD PTR [rbp-4], 1        ; Increment the loop counter.
+
+```
+- The loop counter ([rbp-4]) determines which byte of [rbp-10] is accessed.
+- `movzx` loads the current byte from the "array" (memory region starting at [rbp-10]) and zero-extends it to eax.
+- The byte is then extended to edx for use as an argument to printf.
+- `edi` holds the address of the format string (likely "%c").
+- `esi` passes the current byte to printf as the second argument.
+
+```
+.L2:                             ; Loop condition label.
+    cmp     DWORD PTR [rbp-4], 5 ; Compare the loop counter to 5.
+    jle     .L3                  ; If counter <= 5, jump back to loop body.
+```
+* The loop iterates 6 times, since the code states that the index > 6.
+* In assembly it stops when it hits `[rpb-4] > 5` as it compares the loop counter to 5.
+
+* the remainding part of the assembly code involves the clean up and sets the return value to 0, it restores the `rbp` and adjusts the `rsp`. 
+
+
+### General assembly keywords:
+| Keyword/Instruction | Meaning                                                                                     |
+|---------------------|---------------------------------------------------------------------------------------------|
+| push                | Pushes a value onto the stack. Used to save registers or parameters during function calls.  |
+| pop                 | Removes (pops) the top value from the stack into a register or memory location.             |
+| mov                 | Moves data between registers, memory, or immediate values.                                  |
+| add                 | Adds two values and stores the result in a register or memory.                              |
+| sub                 | Subtracts one value from another and stores the result.                                     |
+| cmp                 | Compares two values (sets flags based on the result). Often used before jumps.              |
+| jmp                 | Unconditionally jumps to a specified label or memory address.                               |
+| jle                 | Jumps if the previous comparison result indicates less than or equal (≤).                   |
+| je                  | Jumps if equal (==) based on the previous comparison.                                       |
+| jne                 | Jumps if not equal (!=).                                                                    |
+| jl                  | Jumps if less than (<).                                                                     |
+| jg                  | Jumps if greater than (>).                                                                  |
+| call                | Calls a function by pushing the return address onto the stack and jumping to the function.  |
+| ret                 | Returns from a function, popping the return address from the stack and jumping to it.       |
+| leave               | Cleans up the current function’s stack frame (restores rbp and adjusts rsp).                |
+| movzx               | Moves data and zero-extends it to a larger register size. Often used for unsigned values.   |
+| movsx               | Moves data and sign-extends it to a larger register size. Often used for signed values.     |
+| cdqe                | Converts a 32-bit `eax` register to a 64-bit `rax` by sign-extending the value.             |
+| xor                 | Performs bitwise XOR. Commonly used to zero out a register (e.g., `xor eax, eax`).          |
+| and                 | Performs bitwise AND between two values.                                                    |
+| or                  | Performs bitwise OR between two values.                                                     |
+| test                | Performs a bitwise AND between two values, but doesn't store the result (sets flags).       |
+| shl                 | Shifts bits in a value to the left (multiplication by powers of 2).                         |
+| shr                 | Shifts bits in a value to the right (unsigned division by powers of 2).                     |
+| sar                 | Shifts bits in a value to the right, preserving the sign bit (signed division).             |
+| lea                 | Loads the effective address of a memory location into a register (pointer arithmetic).      |
+| nop                 | No operation (placeholder instruction).                                                     |
+| pushfq              | Pushes the flags register onto the stack.                                                   |
+| popfq               | Pops the flags register from the stack.                                                     |
+---------------------------------------------------------------------------------------------------------------------
