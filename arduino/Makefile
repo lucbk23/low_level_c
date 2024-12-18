@@ -15,11 +15,11 @@ F_CPU = 16000000UL
 
 # Programmer configuration
 PROGRAMMER = arduino
-BAUD = 57600
-PORT = /dev/tty.usbserial-BG000IJ7
+BAUD = 115200
+PORT = /dev/tty.usbserial-110
 
 # Source and build directories
-SRC_DIR = src
+SRC_DIR = .                    # Using current directory for source files
 BUILD_DIR = build
 
 # Source files (all .c files in SRC_DIR)
@@ -29,8 +29,8 @@ SRCS = $(wildcard $(SRC_DIR)/*.c)
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
 
 # Output files
-ELF = $(BUILD_DIR)/program.elf
-HEX = $(BUILD_DIR)/program.hex
+ELF = $(BUILD_DIR)/knight.elf
+HEX = $(BUILD_DIR)/knight.hex
 
 # Compiler flags
 CFLAGS = -Os -mmcu=$(MCU) -DF_CPU=$(F_CPU)

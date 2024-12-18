@@ -482,6 +482,72 @@ Loop unrolling: The compiler will unroll loops for you.
 ## Role of the Header files
 
 
+# CPU Architecture
+This chapter will cover the architecture of the CPU.
+
+## Von Neumann Architecture
+- The CPU is made up of a central processing unit (CPU) and a memory.
+- This type of architecture is like a single road, for both data and instructions.
+- The CPU is the brain of the computer, and the memory is where the data is stored.
+- One memory Space: Data (like variables) and instructions (like the program) are stored in the same memory space.
+- Shared bus: The CPU uses one set of wires (a "bus") to read and write data and instructions.
+- Sequential access: Because there is only one bus, the CPU can only fetch either data or an instruction at a time.
+    - Pros: 
+        - Simpler design
+        - Flexible: Memory can be used for either data or instructions as needed.
+    - Cons:
+        - Slower: Because the CPU has to wait for the bus to be free, it can't fetch two instructions at the same time. This is called the "Von Neumann bottleneck".
+    - Example: 
+        - CPU fetches instruction
+        - CPU fetches data
+        - CPU writes data
+        - CPU writes instruction
+        - CPU repeats
+- Cache: The CPU can store data and instructions in a cache, which is a small memory that is faster than the main memory.
+
+## Harvard Architecture
+This is like having two seperate roads, one for data and one for instructions.
+- Seperate memory spaces: Data and instructions are stored in different memory spaces. 
+- Seperate buses: The CPU uses two sets of wires (buses) to read and write data and instructions simultaneously.
+- Parallel access: The CPU can fetch both data and instructions at the same time.
+    - Pros:
+        - Faster: Because the CPU can fetch two instructions at the same time, it can complete two instructions in the same time.
+        - More efficient: Prevents accidental overwriting of program instructions.
+    - Cons:
+        - More complex to design, more wires to connect.
+        - Less flexible: Memory can only be used for data or instructions, not both.
+Summary:
+![alt text](image-1.png)
+
+## Address Bus
+The address bus is the bus that connects the CPU to the memory.
+- They transfer information in the form of electrical signals. In most systems there are 3 main types of buses:
+    - Address bus: This is like a map, that tells the CPU where to find the data or instructions.
+        - Purpose: Carries the memory address of the data or instruction the CPU wants to access.
+        - It typically runs in 1 direction, from the CPU to memory or I/O devices.
+        - Size: Depends on the system: A 16-bit address bus can address 2^16 (64KB) bytes of memory, while a 32-bit address bus can address 2^32 (4GB) bytes of memory.
+    - Analogy: The address bus is like a delivery driver who recieves the address (location in memory) of a house but doesn't carry the package himself, the bus does that.
+
+## Data Bus
+This bus is like the delivery truck that carries the actual information (data) to the CPU.
+- Purpose:
+    - Transfers the data between the CPU, memory and peripheral devices.
+    - It typically runs in both directions, from memory to the CPU and from the CPU to peripheral devices.
+    - Size: Determines how much data can be transferred at once. An 8-bit data bus transfers 1 byte at a time, while a 16-bit data bus transfers 2 bytes at a time.
+    - Analogy: This is the actual truck that delivers the package to the house.
+## Control Bus
+This bus is like the traffic lights that control the delivery truck and coordinate the flow of data.
+- Purpose:
+    - Carries control signals from the CPU to coordinate activities (e.g. read/write operations, interrupts, etc.).
+    - It is typically bi-directional, depending on the signal sent.
+    - Signals: 
+        - Read (RD): Indicates that the CPU wants to read data from memory.
+        - WRITE (WR): Indicates that the CPU wants to write data to memory.
+        - Interrupt (INT): Indicates that the CPU wants to interrupt the current activity and handle an external event.
+        - Clock (CLK): Synchronizes the operations of the CPU and memory.
+    - Analogy: The control bus is like the traffic lights that control the delivery truck (data and address buses) when to stop, go or change direction.
+
+
 # Hex Dump
 
 Hex dump er en tekst-fil, der viser en binær fil i en hexadecimal format. Dette er et af de mest almindelige formater for at vise binære data. 

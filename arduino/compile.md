@@ -21,7 +21,7 @@ avrdude -c arduino -p m328p -P /dev/tty.usbserial-BG000IJ7 -b 57600 -D -U flash:
 ## A good idea would be to make a Makefile for this.
 
 ## That has been done!
-
+Still doesnt work though.
 ### Using the Makefile
 - Check the makefile in the folder for the correct variables.
     - Variables to check out are:

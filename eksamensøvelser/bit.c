@@ -8,12 +8,7 @@ int main()
     long long x = 0x7165498511230; // 13 hexadecimal digits represent 52 bits of information.
 
     /*
-     * The program's main purpose is to decode the hexadecimal number stored in 'x'
-     * and convert it into a readable string. It does this by extracting small parts
-     * of the number, performing calculations, and mapping the results to characters.
-     *
      * Here's how it works step-by-step:
-     *
      * 1. The 'while' loop runs as long as 'x' is not zero.
      * 2. In each loop iteration:
      *    a. 'x' is divided by 16 (shifted right by 4 bits) to process one hexadecimal digit at a time.
@@ -23,7 +18,6 @@ int main()
      *    e. The result is masked with 0x7F to ensure it falls within the range of printable characters.
      *    f. Finally, 32 is added to this value to get the ASCII code of the character to be printed.
      *    g. The corresponding character is printed to the console.
-     *
      * 3. This process repeats for each hexadecimal digit in 'x', ultimately printing out the full decoded string.
      */
 
@@ -33,6 +27,7 @@ int main()
 
     return 0;
 }
+//Order of calculation: 1. bit-shift the hex & 15. 2. Multiply by 7. 3. then we & with 0x7F. 4. Add 32 to get the ASCII value.
 
 /*
  * Summary of How the Program Works:
