@@ -1112,3 +1112,75 @@ out:
 - All three functions calculate and return the length of the global string word. They iterate through each character in the word array until they encounter the null terminator ('\0'), incrementing the counter i to determine the total number of characters.
 - All 3 loops give the same assembly code. This is also partly because of the compilers optimizations.
 Although function A is to prefer, because of the use of a simple `while` loop condition, making the intent clear.
+
+
+## UTF8 and ASCII
+- ASCII
+Definition:
+- 7-bit character encoding standard.
+- Represents 128 characters: English letters, digits, punctuation, and control characters.
+- Encoding Size:
+Each character uses 1 byte (8 bits), with the highest bit typically unused.
+- Scope:
+Limited to basic English characters and symbols.
+Compatibility:
+Subset of UTF-8; any ASCII text is valid UTF-8.
+
+- UTF-8
+UTF-8
+- efinition:
+Variable-width character encoding for Unicode.
+Can represent over a million unique characters from various languages and symbol sets.
+Encoding Size:
+- 1 byte for ASCII characters (0–127).
+- 2 bytes for characters from other languages.
+- 3 bytes for most common non-Latin scripts.
+- 4 bytes for less common characters and emojis.
+- Scope:
+Covers all Unicode characters, including emojis, symbols, and characters from virtually all written languages.
+Compatibility:
+Backward compatible with ASCII.
+
+### Conversion
+- ASCII to UTF-8
+ASCII to UTF-8
+Process:
+Directly compatible.
+Each ASCII character (1 byte) maps to the same single-byte UTF-8 representation.
+Impact:
+No changes needed; ASCII text is inherently valid UTF-8.
+- UTF-8 to ASCII
+UTF-8 to ASCII
+Process:
+Only possible if the UTF-8 text contains only ASCII characters (0–127).
+Non-ASCII characters (≥128) cannot be represented in ASCII.
+Impact:
+Data Loss: Non-ASCII characters must be removed or replaced.
+Validation Required: Ensure text contains only ASCII characters before conversion.
+
+#### String length
+String Length in ASCII
+Calculation:
+Each character is 1 byte.
+strlen() accurately returns the number of characters.
+Example:
+"Hello" has a length of 5.
+String Length in UTF-8
+Calculation:
+Characters can be 1 to 4 bytes.
+strlen() returns the number of bytes, not the actual number of characters.
+Implications:
+Misinterpretation: Functions that assume 1 byte per character may produce incorrect results.
+Multi-byte Characters: Characters like é, 漢, or emojis count as multiple bytes.
+Solution:
+Use Unicode-aware libraries or functions (e.g., mb_strlen() in PHP, std::wstring in C++) to accurately determine the number of characters.
+
+#### Key points
+ASCII is Limited: Only 128 characters; simple and fixed size (1 byte per character).
+UTF-8 is Universal: Supports all Unicode characters with variable byte lengths (1-4 bytes).
+Length Calculation:
+ASCII: strlen() = number of characters.
+UTF-8: strlen() = number of bytes; use specialized functions for character count.
+Encoding Conversion:
+ASCII ↔ UTF-8 is straightforward if the text is purely ASCII.
+Non-ASCII characters require careful handling to prevent data loss during conversion.
