@@ -540,7 +540,7 @@ Pointers are variables that store the address of another variable.
 ```int *p = &a;``` // p is a pointer that stores the address of a
 
 ```&a``` This is the *address of* operator, when used in a function such as ```printf()``` it will print the address of the variable.
-- Pointers are quite useful, but also quite complecited: 
+- Pointers are quite useful, but also quite complicated: 
     - Pointers can point at pointers, which can point at pointers, and so on.
     - Pointers are not always the best solution to a problem, but they are the most common.
     - For instance you can have a variable that has a value, which is then placed at a specific address in the heap, then you can chose to point to that variable and place it in a different location in the heap.
