@@ -11,7 +11,7 @@ char * line(char c, int repeat){
     while(repeat--){
         str[repeat] = c; // Tildeler characteren 'c' til hver position i strengen
     }
-    printf("Size of str: %lu\n", sizeof(str));
+    printf("Size of str: %lu\n", sizeof(*str));
     return str; // Returnerer pointer til den allokerede string
 }
 

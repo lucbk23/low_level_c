@@ -3,26 +3,31 @@
 int main (){
     int arr[5] = {1, 2, 3, 4, 5};
     int *ptr = arr; 
+    int *ptr2 = &arr[0];
 
     printf("Original Array: \n");
     for (int i = 0; i < 5; i++){
         printf("%d ", arr[i]);
-    
+        
     }
     printf("\n");
     printf("Accessing the array using the pointer: \n");
     for (int i = 0; i < 5; i++) {
         printf("%d ", *(ptr + i)); // What does the pointer do here? the * dereferences the pointer, so that it can access the value of the array
+        printf("%d ", ptr +i);
+        ptr2 = &arr[i];
+        printf("%d ",*ptr2);
     }
     printf("\n");
 
-    printf("Doubling the array elements using a pointer: \n");
+   /* printf("Doubling the array elements using a pointer: \n");
 
     for (int i = 0; i < 5; i++){
         *(ptr + i) *= 2; // The pointer points at the value of the element in the array, and then *2 the value = doubles it. 
         printf("%d ", *(ptr + i)); // the pointer now points at the value of the element in the array that has been doubled, at iterated through the loop and returns the doubled value inside each element of the array. 
     }
     printf("\n");
+    */
 
     printf("Accessing the elements in the array by moving the pointer: \n");
     ptr = arr; // The pointer is now pointing at the first element in the array.
