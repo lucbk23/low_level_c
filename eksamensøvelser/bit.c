@@ -3,25 +3,9 @@
 
 int main() 
 {
-    // Initialize a large number using hexadecimal notation.
-    // This number contains hidden information that will be decoded into text.
-    long long x = 0x7165498511230; // 13 hexadecimal digits represent 52 bits of information.
+    long long x = 0x7165498511230; 
 
-    /*
-     * Here's how it works step-by-step:
-     * 1. The 'while' loop runs as long as 'x' is not zero.
-     * 2. In each loop iteration:
-     *    a. 'x' is divided by 16 (shifted right by 4 bits) to process one hexadecimal digit at a time.
-     *    b. The last hexadecimal digit (nibble) is extracted by taking the remainder when 'x' is divided by 16.
-     *    c. This nibble is then multiplied by 7 to determine how many positions to shift another large number.
-     *    d. A predefined large number (0xC894A7B75116601) is shifted right by the calculated number of positions.
-     *    e. The result is masked with 0x7F to ensure it falls within the range of printable characters.
-     *    f. Finally, 32 is added to this value to get the ASCII code of the character to be printed.
-     *    g. The corresponding character is printed to the console.
-     * 3. This process repeats for each hexadecimal digit in 'x', ultimately printing out the full decoded string.
-     */
 
-    // The loop will run 13 times, once for each hexadecimal digit in 'x'.
     while (x) 
         putchar(32 + ((0xC894A7B75116601 >> ((x >>= 4) & 15) * 7) & 0x7F));
 

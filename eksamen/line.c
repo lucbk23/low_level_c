@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 char * line(char c, int repeat){
     char *str = malloc(repeat + 1); // Allocate memory for the string plus null terminator
@@ -11,7 +12,8 @@ char * line(char c, int repeat){
     while(repeat--){
         str[repeat] = c; // Tildeler characteren 'c' til hver position i strengen
     }
-    printf("Size of str: %lu\n", sizeof(*str));
+    printf("Hello, world!\n%s\n", str);
+    printf("Size of str: %lu\n", strlen(str)); // Print the size of the allocated string
     return str; // Returnerer pointer til den allokerede string
 }
 
